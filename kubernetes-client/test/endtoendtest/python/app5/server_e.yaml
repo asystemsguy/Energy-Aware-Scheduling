@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: servere
+ namespace: athena
+spec:
+ selector:
+  matchLabels:
+   server: E
+ replicas: 1
+ template:
+  metadata:
+   labels:
+    server: E
+  spec:
+   schedulerName: athena-scheduler
+   containers:
+   - name: app5
+     image: khv129/app5
+     ports:
+     - containerPort: 8090
+     resources:
+        requests:
+          memory: "640Mi"
+          cpu: "1.8"
+        limits:
+          memory: "900Mi"
+          cpu: "2"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: server-e-service
+ namespace: athena
+spec:
+ clusterIP: 10.96.0.15
+ type: NodePort
+ ports:
+ - port: 8094
+   targetPort: 8090
+   protocol: TCP
+ selector:
+  server: E
+

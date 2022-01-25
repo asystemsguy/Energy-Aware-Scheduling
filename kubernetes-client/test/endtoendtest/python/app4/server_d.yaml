@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: serverd
+ namespace: athena
+spec:
+ selector:
+  matchLabels:
+   server: D
+ replicas: 1
+ template:
+  metadata:
+   labels:
+    server: D
+  spec:
+   schedulerName: athena-scheduler
+   containers:
+   - name: app4
+     image: khv129/app4
+     ports:
+     - containerPort: 8090
+     resources:
+        requests:
+          memory: "640Mi"
+          cpu: "1.8"
+        limits:
+          memory: "900Mi"
+          cpu: "2"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+ name: server-d-service
+ namespace: athena
+spec:
+ clusterIP: 10.96.0.14
+ type: NodePort
+ ports:
+ - port: 8093
+   targetPort: 8090
+   protocol: TCP
+ selector:
+  server: D
+
+

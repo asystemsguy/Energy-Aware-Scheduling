@@ -1,0 +1,40 @@
+cd Kubernetes-addons/
+ prometheus.yaml
+
+initialize a container
+kubectl run my-shell -i --tty --image unbuntu -- bash
+
+go into interactive shell  
+**kubectl exec -it my-shell-dsdja-dsdjo -- /bin/bash**
+
+apt
+
+GET NODE METRICS
+kubectl get svc -n monitoring
+prometheus 10.103.218.73
+
+kubectl describe service prometheus -n monitoring
+IP I need: 10.44.0.2:9090
+curl prometheus.monitoring.svc.cluster.local:9090
+curl 'http://ip:9090/api/v1/query?query=
+up&time=2015-07-01T20:10:51.781Z'
+
+
+
+GET CONTAINER & NETWORK METRICS
+-n istio-system
+IP I need: 10.44.0.2:9090
+curl prometheus.istio-system.svc.cluster.local:9090
+
+sample query
+curl prometheus.istio-system.svc.cluster.local:9090/api/v1/query?query=container_cpu_usage_seconds_total   
+
+
+minikube
+kubectl port-forward pods/prometheus-core-fd6c87c77-ffwdq 9090:9090 -n monitoring
+
+systemctl daemon-reload
+systemctl restart kubelet
+
+
+
